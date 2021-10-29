@@ -11,5 +11,5 @@ type ProductRepository interface {
 	// 	Update(ctx context.Context)
 	// 	Delete(ctx context.Context)
 	// 	FindById(ctx context.Context)
-	// 	FindAll(ctx context.Context)
+	FindAll(ctx context.Context, collection *mongo.Collection) []model.ProductDetail
 }

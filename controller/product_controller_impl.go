@@ -40,3 +40,19 @@ func (controller *ProductControllerImpl) Create(writer http.ResponseWriter, requ
 		panic(err)
 	}
 }
+
+func (controller *ProductControllerImpl) FindAll(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	productsResponse := controller.ProductService.FindAll(request.Context())
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   productsResponse,
+	}
+
+	writer.Header().Add("Content-Type", "application/json")
+	encoder := json.NewEncoder(writer)
+	err := encoder.Encode(webResponse)
+	if err != nil {
+		panic(err)
+	}
+}

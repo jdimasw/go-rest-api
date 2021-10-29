@@ -32,8 +32,26 @@ func (service *ProductServiceImpl) Create(ctx context.Context, request web.Produ
 	product = service.ProductRepository.Save(ctx, collection, product)
 
 	return web.ProductResponse{
-		Id:     product.Id,
+		// Id:     product.Id,
 		Name:   product.Name,
 		Detail: product.Detail,
 	}
+}
+
+func (service *ProductServiceImpl) FindAll(ctx context.Context) []web.ProductDetailResponse {
+	collection := service.Client.Database(os.Getenv("DB_NAME")).Collection("products")
+
+	products := service.ProductRepository.FindAll(ctx, collection)
+	
+	var productResponses []web.ProductDetailResponse
+	
+	for _, product := range products {
+		productResponses = append(productResponses, web.ProductDetailResponse{
+			Id:     product.Id,
+			Name:   product.Name,
+			Detail: product.Detail,
+		})
+	}
+	
+	return productResponses
 }
