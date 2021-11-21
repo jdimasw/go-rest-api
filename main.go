@@ -38,6 +38,7 @@ func main() {
 	router.GET("/hello/:name", Hello)
 	router.POST("/api/products", productController.Create)
 	router.GET("/api/products", productController.FindAll)
+	router.GET("/api/products/:productId", productController.FindById)
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 

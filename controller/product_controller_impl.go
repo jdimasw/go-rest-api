@@ -56,3 +56,22 @@ func (controller *ProductControllerImpl) FindAll(writer http.ResponseWriter, req
 		panic(err)
 	}
 }
+
+func (controller *ProductControllerImpl) FindById(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+	var productId string
+	productId = params.ByName("productId")
+
+	productResponse := controller.ProductService.FindById(request.Context(), productId)
+	webResponse := web.WebResponse{
+		Code:   200,
+		Status: "OK",
+		Data:   productResponse,
+	}
+
+	writer.Header().Add("Content-Type", "application/json")
+	encoder := json.NewEncoder(writer)
+	err := encoder.Encode(webResponse)
+	if err != nil {
+		panic(err)
+	}
+}

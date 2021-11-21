@@ -42,9 +42,9 @@ func (service *ProductServiceImpl) FindAll(ctx context.Context) []web.ProductDet
 	collection := service.Client.Database(os.Getenv("DB_NAME")).Collection("products")
 
 	products := service.ProductRepository.FindAll(ctx, collection)
-	
+
 	var productResponses []web.ProductDetailResponse
-	
+
 	for _, product := range products {
 		productResponses = append(productResponses, web.ProductDetailResponse{
 			Id:     product.Id,
@@ -52,6 +52,18 @@ func (service *ProductServiceImpl) FindAll(ctx context.Context) []web.ProductDet
 			Detail: product.Detail,
 		})
 	}
-	
+
 	return productResponses
+}
+
+func (service *ProductServiceImpl) FindById(ctx context.Context, productId string) web.ProductDetailResponse {
+	collection := service.Client.Database(os.Getenv("DB_NAME")).Collection("products")
+
+	product := service.ProductRepository.FindById(ctx, collection, productId)
+
+	return web.ProductDetailResponse{
+		Id:     product.Id,
+		Name:   product.Name,
+		Detail: product.Detail,
+	}
 }

@@ -9,7 +9,7 @@ type ProductResponse struct {
 }
 
 type ProductDetailResponse struct {
-	Id     primitive.ObjectID
-	Name   string
-	Detail string
+	Id     primitive.ObjectID `json:"id"`
+	Name   string             `json:"name"`
+	Detail string             `json:"detail"`
 }

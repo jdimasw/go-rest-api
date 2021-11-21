@@ -5,6 +5,7 @@ import (
 	// "fmt"
 	"go-rest-api/model"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -21,11 +22,36 @@ func (repository *ProductRepositoryImpl) Save(ctx context.Context, collection *m
 		panic(err)
 	}
 
-	// if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
-	// 	product.Id = oid.Hex()
-	// }
+	return product
 
-	// product.Id = res.InsertedID.Hex()
+	// var productId string
+
+	// if oid, ok := res.InsertedID.(primitive.ObjectID); ok {
+	// 	productId = oid.Hex()
+	// }
+	// objID, err := primitive.ObjectIDFromHex(res.InsertedID)
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// productId := objID
+
+	// return model.ProductDetail{
+	// 	Id:     productId,
+	// 	Name:   product.Name,
+	// 	Detail: product.Detail,
+	// }
+}
+
+func (repository *ProductRepositoryImpl) FindById(ctx context.Context, collection *mongo.Collection, productId string) model.ProductDetail {
+	var product model.ProductDetail
+	objID, err := primitive.ObjectIDFromHex(productId)
+	if err != nil {
+		panic(err)
+	}
+	err = collection.FindOne(ctx, bson.D{{"_id", objID}}).Decode(&product)
+	if err != nil {
+		panic(err)
+	}
 
 	return product
 }
